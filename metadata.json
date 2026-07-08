@@ -1,0 +1,6 @@
+{
+  "name": "On the Beach - Contact Us",
+  "description": "A high-performance, SEO-optimized replica of the On the Beach Contact Us page.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
