@@ -538,27 +538,27 @@ const FAQs = () => {
       setFaqs([
         {
           title: "How do I contact you?",
-          answer: "As an online-only travel agent, the easiest way to reach us is through the Live Chat in your 'My Bookings' section. We don't have call centres, which helps keep our holidays super cheap!"
+          answer: "While we're an online-only travel agent and don't have call centres, our dedicated team is always ready to help! The absolute quickest and easiest way to reach us is by starting a live chat. We can sort out most things right there and then."
         },
         {
           title: "Can I make a change to my booking?",
-          answer: "You sure can! Most changes like adding baggage, selecting seats, or updating passenger details can be done directly in your 'My Bookings' account. Keep in mind that some changes might incur a fee from the airline or hotel."
+          answer: "You sure can! While some simple changes can be made in 'My Bookings', the best way to ensure everything goes smoothly—especially for things like passenger details or major changes—is to chat with one of our specialists. We'll handle the heavy lifting for you."
         },
         {
           title: "How do I cancel my booking and what will it cost?",
-          answer: "We're sorry to hear you can't go on your jollies! You can cancel your booking via the 'My Bookings' portal. Cancellation charges vary depending on how close you are to your departure date and the non-refundable costs from airlines and hotels."
+          answer: "We're so sorry to hear you can't go on your jollies! Cancellations can be a bit tricky with varying airline and hotel fees. To get the clearest picture of your options and exact costs, we highly recommend jumping on a quick chat with our team before doing anything."
         },
         {
           title: "How do I check in for my flight?",
-          answer: "You'll need to check in directly with your airline. We'll send you your airline booking reference and instructions a few weeks before you fly. You can usually do this on their website or app."
+          answer: "Usually, you'll check in directly with your airline a few weeks before flying. However, if you're unsure about your specific airline's process or need help finding your reference numbers, our team is just a message away. Chat with us and we'll point you in the right direction!"
         },
         {
           title: "How do I check my balance/next instalment?",
-          answer: "You can keep track of your payments, see your remaining balance, and make payments towards your holiday anytime by logging into 'My Bookings'."
+          answer: "You can track your basic payment info in 'My Bookings'. But if you need to discuss payment plans, make special arrangements, or just want a detailed breakdown of what's due when, reaching out to our support team via chat is always your best bet."
         },
         {
           title: "What is my luggage allowance?",
-          answer: "Luggage allowances depend completely on the airline you're flying with. You can check your specific baggage allowance on your booking paperwork or by logging into your 'My Bookings' account."
+          answer: "Luggage allowances depend completely on the airline you're flying with. Instead of hunting through airline terms and conditions, why not just ask us? Start a chat, and our friendly team will quickly confirm exactly what you're allowed to take."
         }
       ]);
       setLoading(false);
