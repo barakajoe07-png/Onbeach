@@ -3,10 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, ChevronRight, Menu, Search, User, Briefcase, Heart, Clock, Star, ShieldCheck, PiggyBank, Palmtree, CheckCircle, MessageCircle, X, Mail, Loader2 } from 'lucide-react';
 
-const AuthContext = React.createContext<{
+const AuthContext = createContext<{
   isLoggedIn: boolean;
   userEmail: string;
   login: (email: string) => void;
@@ -16,7 +17,7 @@ const AuthContext = React.createContext<{
 });
 
 const LoginModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
-  const { login } = React.useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
@@ -221,7 +222,7 @@ const TopBar = () => (
 );
 
 const NavBar = () => {
-  const { isLoggedIn, userEmail, logout } = React.useContext(AuthContext);
+  const { isLoggedIn, userEmail, logout } = useContext(AuthContext);
   const [showLogin, setShowLogin] = useState(false);
 
   return (
@@ -282,44 +283,135 @@ const Hero = () => (
         <p className="text-2xl md:text-3xl font-bold text-[#1e3a8a]">Get in touch, you <br />Smart Booker.</p>
       </div>
       <div className="w-full md:w-1/2 h-full absolute right-0 top-0 bottom-0 bg-cover bg-center" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1598257006458-087169a1f08d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80")' }}>
-         <div className="absolute inset-0 bg-gradient-to-r from-[#facc15] via-[#facc15]/80 to-transparent"></div>
+         <div className="absolute inset-0 bg-gradient-to-r from-[#facc15] via-[#facc15]/30 to-transparent"></div>
       </div>
     </div>
   </section>
 );
 
-const Intro = () => {
-  const [showForm, setShowForm] = useState(false);
+const QuickActions = () => (
+  <section className="px-4 md:px-8 mb-12 max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6">
+    <button 
+      onClick={() => window.dispatchEvent(new CustomEvent('open-help-modal', { detail: { subject: 'general' } }))}
+      className="bg-[#1e3a8a] text-white p-6 rounded-2xl flex items-center gap-6 hover:bg-blue-900 transition-all shadow-md group border-4 border-transparent hover:border-[#facc15] text-left"
+    >
+      <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+        <MessageCircle size={32} className="text-[#facc15]" />
+      </div>
+      <div>
+         <h3 className="text-2xl font-black mb-1">Contact Us</h3>
+         <p className="text-sm text-blue-100 font-medium">Chat with our support team</p>
+      </div>
+    </button>
+    
+    <button 
+      onClick={() => window.dispatchEvent(new CustomEvent('open-help-modal', { detail: { subject: 'refund' } }))}
+      className="bg-[#facc15] text-[#1e3a8a] p-6 rounded-2xl flex items-center gap-6 hover:bg-yellow-400 transition-all shadow-md group border-4 border-transparent hover:border-[#1e3a8a] text-left"
+    >
+      <div className="w-16 h-16 bg-[#1e3a8a]/10 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+        <PiggyBank size={32} className="text-[#1e3a8a]" />
+      </div>
+      <div>
+         <h3 className="text-2xl font-black mb-1">Request Refund</h3>
+         <p className="text-sm text-[#1e3a8a]/80 font-medium">Fast-track your refund</p>
+      </div>
+    </button>
+  </section>
+);
 
+const Intro = () => {
   return (
-    <section className="px-4 md:px-8 max-w-4xl mb-12 text-gray-800 leading-relaxed space-y-5 md:text-lg">
+    <section className="px-4 md:px-8 max-w-4xl mb-8 text-gray-800 leading-relaxed space-y-5 md:text-lg">
       <p>Hiya! 👋 You've reached On the Beach (try saying that after a few Fanta Lemons). We're an online-only bunch, which means two things:</p>
       <ol className="list-decimal pl-5 space-y-2 font-medium">
         <li>We're super hip and cool</li>
         <li>The easiest way to reach us is through our handy <strong className="text-gray-900">Live Chat</strong> feature.</li>
       </ol>
-      <p>You can find this under the 'Help and Contact' section of your <a href="#" className="text-blue-600 hover:underline font-medium">My Bookings account</a>, and one of our beach buddies will be happy to help you on your way.</p>
-      
-      <div className="pt-4 pb-4">
-        <button 
-          onClick={() => setShowForm(!showForm)}
-          className="text-[#1e3a8a] font-black hover:text-blue-800 flex items-center gap-2 bg-[#facc15] px-6 py-3 rounded-xl shadow-sm hover:shadow-md transition-all active:scale-95"
-        >
-          {showForm ? 'Hide Contact Form' : 'Use Alternative Contact Form'}
-          <ChevronDown size={20} className={`transform transition-transform ${showForm ? 'rotate-180' : ''}`} />
-        </button>
-        
-        {showForm && (
-           <div className="animate-in slide-in-from-top-4 duration-300 fade-in mt-4">
-              <ContactForm />
-           </div>
-        )}
-      </div>
-
-      <p className="mt-4 text-sm italic text-gray-500">For more details on how to reach us, have a nosy below...</p>
     </section>
   );
 };
+
+const DestinationCarousel = () => {
+  const [cards, setCards] = useState([
+    { id: 1, url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', title: 'Luxury Hotels' },
+    { id: 2, url: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', title: 'Pristine Beaches' },
+    { id: 3, url: 'https://images.unsplash.com/photo-1599640842225-85d111c60e6b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', title: 'Ocean Cruises' },
+    { id: 4, url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', title: 'Resort Stays' },
+    { id: 5, url: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', title: 'Tropical Islands' },
+    { id: 6, url: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', title: 'Boutique Hotels' },
+  ]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCards(prev => {
+        const newCards = [...prev];
+        const first = newCards.shift();
+        if (first) newCards.push(first);
+        return newCards;
+      });
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="px-4 md:px-8 mb-24 max-w-[1400px] flex flex-col md:flex-row items-center gap-12 pt-8">
+      <div className="md:w-1/3 z-20">
+        <h2 className="text-4xl font-black text-[#1e3a8a] mb-4 leading-tight">Explore the <br/><span className="text-[#facc15]">world</span> with us</h2>
+        <p className="text-gray-600 mb-6 text-lg">Discover handpicked destinations perfect for your next getaway. From luxury resorts to pristine beaches, we've got you covered.</p>
+      </div>
+      <div className="md:w-2/3 flex justify-center items-center h-[400px] relative w-full perspective-[1000px] mt-8 md:mt-0">
+        <AnimatePresence>
+          {cards.map((img, index) => {
+             return (
+               <motion.div
+                 key={img.id}
+                 layout
+                 initial={{ opacity: 0, scale: 0.8, y: 50 }}
+                 animate={{ 
+                   opacity: 1 - index * 0.15, 
+                   scale: 1 - index * 0.05,
+                   y: index * 20,
+                   x: index * 10,
+                   zIndex: cards.length - index,
+                   rotate: index === 0 ? 0 : index % 2 === 0 ? index * 2 : -index * 2
+                 }}
+                 exit={{ opacity: 0, scale: 0.8, y: -50 }}
+                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                 className="absolute w-[280px] md:w-[350px] h-[350px] rounded-2xl overflow-hidden shadow-2xl border-4 border-white origin-bottom"
+               >
+                 <img src={img.url} alt={img.title} className="w-full h-full object-cover" />
+                 <div className="absolute inset-0 bg-gradient-to-t from-[#1e3a8a]/90 via-[#1e3a8a]/20 to-transparent flex items-end p-6">
+                   <h3 className="text-white font-bold text-2xl tracking-tight">{img.title}</h3>
+                 </div>
+               </motion.div>
+             )
+          })}
+        </AnimatePresence>
+      </div>
+    </section>
+  );
+};
+
+const ChatPromo = () => (
+  <section className="px-4 md:px-8 mb-16 max-w-4xl mx-auto">
+    <div className="bg-white rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-10 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-gray-100 relative overflow-hidden transform transition-all hover:-translate-y-2">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="w-28 h-28 bg-gradient-to-br from-blue-50 to-[#1e3a8a]/10 rounded-full flex items-center justify-center flex-shrink-0 shadow-inner relative z-10 border border-blue-100">
+         <MessageCircle size={56} className="text-[#1e3a8a]" />
+      </div>
+      <div className="relative z-10 flex-1">
+        <h2 className="text-3xl md:text-4xl font-black text-[#1e3a8a] mb-4 tracking-tight">Need help right now?</h2>
+        <p className="text-gray-600 mb-8 text-lg leading-relaxed">Our beach buddies are online and ready to chat. Whether you're stuck on a booking or just want some holiday inspiration, we're here for you.</p>
+        <button 
+          onClick={() => window.dispatchEvent(new CustomEvent('open-help-modal', { detail: { subject: 'general' } }))}
+          className="bg-[#1e3a8a] text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-900 transition-all hover:-translate-y-1 hover:shadow-xl flex items-center gap-3 w-full sm:w-auto justify-center group"
+        >
+          Chat with us <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+        </button>
+      </div>
+    </div>
+  </section>
+);
 
 const AppPromo = () => (
   <section className="px-4 md:px-8 mb-12">
@@ -477,7 +569,7 @@ const HelpHub = () => (
   </section>
 );
 
-const AccordionItem = ({ title, answer }: { title: string, answer: string }) => {
+const AccordionItem: React.FC<{ title: string, answer: string }> = ({ title, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
   
   return (
@@ -509,18 +601,19 @@ const AccordionItem = ({ title, answer }: { title: string, answer: string }) => 
 
 const RefundSection = () => (
   <section className="px-4 md:px-8 mb-16 max-w-4xl mx-auto">
-    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8 shadow-sm">
-      <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
+    <div className="bg-gradient-to-r from-[#1e3a8a] to-blue-900 border-2 border-[#facc15] rounded-2xl p-6 md:p-10 flex flex-col md:flex-row items-center gap-8 shadow-xl relative overflow-hidden transform transition-all hover:scale-[1.01]">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="w-24 h-24 bg-[#facc15] rounded-full flex items-center justify-center flex-shrink-0 shadow-lg relative z-10 border-4 border-white/20">
          <PiggyBank size={48} className="text-[#1e3a8a]" />
       </div>
-      <div>
-        <h2 className="text-3xl font-black text-[#1e3a8a] mb-2 tracking-tight">Need a refund?</h2>
-        <p className="text-gray-800 mb-6 text-base leading-relaxed">We understand that plans change. If your holiday was cancelled or you're entitled to a refund based on our terms and conditions, our team is here to help process it as quickly as possible. Please ensure you have your booking reference handy.</p>
+      <div className="relative z-10">
+        <h2 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">Need a refund?</h2>
+        <p className="text-blue-100 mb-6 text-base md:text-lg leading-relaxed font-medium">We understand that plans change. If your holiday was cancelled or you're entitled to a refund based on our terms and conditions, our team is here to help process it as quickly as possible. Please ensure you have your booking reference handy.</p>
         <button 
           onClick={() => window.dispatchEvent(new CustomEvent('open-help-modal', { detail: { subject: 'refund' } }))}
-          className="bg-[#1e3a8a] text-[#facc15] px-8 py-3 rounded-xl font-bold hover:bg-blue-900 transition-colors shadow-sm flex items-center gap-2"
+          className="bg-[#facc15] text-[#1e3a8a] px-8 py-4 rounded-xl font-black text-lg hover:bg-yellow-400 transition-colors shadow-lg flex items-center gap-3 w-full sm:w-auto justify-center"
         >
-          Request a Refund <ChevronRight size={18} />
+          Request a Refund <ChevronRight size={20} className="stroke-[3]" />
         </button>
       </div>
     </div>
@@ -757,7 +850,10 @@ export default function App() {
         <main className="max-w-[1400px] mx-auto bg-white shadow-sm min-h-screen pb-12">
           <Breadcrumbs />
           <Hero />
+          <QuickActions />
           <Intro />
+          <DestinationCarousel />
+          <ChatPromo />
           <AppPromo />
           <BookingStages />
           <HelpHub />
