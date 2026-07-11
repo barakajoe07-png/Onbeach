@@ -70,7 +70,7 @@ const ContactForm = ({ inModal = false, initialSubject = 'general' }: { inModal?
 
   const handleEmailSupport = () => {
     const body = `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}`;
-    window.location.href = `mailto:support@onthebeach.co.uk?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:support@onthebeachsupport.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   const handleWhatsapp = () => {
@@ -228,8 +228,14 @@ const NavBar = () => {
   return (
     <header className="bg-white py-4 px-4 md:px-8 border-b flex items-center justify-between sticky top-0 z-50 shadow-sm">
       <div className="flex items-center gap-6">
-        <a href="/" className="text-2xl font-black text-[#1e3a8a] tracking-tighter" aria-label="On the Beach Home">
-          <span className="bg-[#facc15] px-2 py-1 rounded-lg">On</span> the <br className="hidden md:block" /> Beach
+        <a href="/" className="flex items-center gap-3 text-2xl font-black text-[#1e3a8a] tracking-tighter" aria-label="On the Beach Home">
+          <div className="w-12 h-12 bg-[#facc15] rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm border border-yellow-300">
+            {/* Logo Space */}
+            <Palmtree className="text-[#1e3a8a] ml-1" size={28} />
+          </div>
+          <div>
+            <span className="bg-[#facc15] px-2 py-1 rounded-lg">On</span> the <br className="hidden md:block" /> Beach
+          </div>
         </a>
       </div>
       
@@ -338,7 +344,7 @@ const DestinationCarousel = () => {
     { id: 3, url: 'https://images.unsplash.com/photo-1599640842225-85d111c60e6b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', title: 'Ocean Cruises' },
     { id: 4, url: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', title: 'Resort Stays' },
     { id: 5, url: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', title: 'Tropical Islands' },
-    { id: 6, url: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', title: 'Boutique Hotels' },
+    { id: 6, url: 'https://images.unsplash.com/photo-1542314831-c53cd3816002?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', title: 'Boutique Hotels' },
   ]);
 
   useEffect(() => {
